@@ -50,3 +50,26 @@ QUIT
 221 goodbye
 
 ```
+
+###配置文件
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property>
+		<name>xemail.from</name>
+		<value>xxxxxxx@189.cn</value><!--发件人邮箱-->
+	</property>
+	<property>
+		<name>xemail.pwd</name>
+		<value>sdfsdfsdfsdf</value><!--发件人密码-->
+	</property>
+	<property>
+		<name>xemail.smtp</name>
+		<value>smtp.189.cn</value><!--smtp-->
+	</property>
+	<property>
+		<name>xemail.store.path</name>
+		<value>Y:\\attachMail.eml</value><!--发送邮件后邮件本地存储位置，只针对含有附件的-->
+	</property>
+</configuration>
+```
