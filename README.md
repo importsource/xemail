@@ -73,3 +73,13 @@ QUIT
 	</property>
 </configuration>
 ```
+
+###maven配置
+```xml
+<dependency>
+	<groupId>com.importsource.email</groupId>
+	<artifactId>importsource-email</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+</dependency>
+
+```
