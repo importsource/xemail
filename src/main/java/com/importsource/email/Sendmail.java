@@ -32,7 +32,6 @@ public class Sendmail {
 	private  String from = "";
 	
 	private String storePath="/";
-	// sendText("text","13308362652@189.cn");
 	
 	private Properties properties;
 	private Session session;
