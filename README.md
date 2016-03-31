@@ -2,7 +2,7 @@
 一个基于javax封装的邮件收发组件
 ```java
 Sendmail sendemail=new Sendmail();
-sendemail.sendText("sdfsdf", "meixixizf24@gmail.com");
+sendemail.sendText("一条纯文本消息", "meixixizf24@gmail.com");
 ```
 
 ###输出结果
