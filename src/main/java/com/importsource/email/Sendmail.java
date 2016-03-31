@@ -97,15 +97,7 @@ public class Sendmail {
 	        return message;
 	    }
 	
-	 /**
-	    * @Method: createAttachMail
-	    * @Description: 创建一封带附件的邮件
-	    * @Anthor:孤傲苍狼
-	    *
-	    * @param session
-	    * @return
-	    * @throws Exception
-	    */ 
+	
 	    private  MimeMessage createAttachMail(String text,FileDataSource fileDataSource,String receiver) throws Exception{
 	        MimeMessage message = new MimeMessage(session);
 	        
