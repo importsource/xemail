@@ -3,6 +3,7 @@ package com.importsource.email;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import javax.activation.FileDataSource;
@@ -27,7 +28,7 @@ public abstract class AbstractEmail {
 
 	protected  String from = "";
 	
-	protected String storePath="/";
+	protected String storePath="";
 	
 	protected Properties properties;
 	protected Session session;
@@ -41,6 +42,7 @@ public abstract class AbstractEmail {
 		from=PropertiesTools.get(p, "xemail.from", "");
 		pwd=PropertiesTools.get(p, "xemail.pwd", "");
 		smtp=PropertiesTools.get(p, "xemail.smtp", "");
+		storePath=PropertiesTools.get(p, "xemail.store.path", "");
 	}
 	
 	
@@ -51,19 +53,19 @@ public abstract class AbstractEmail {
 	 * @param receiver 接收人
 	 * @throws Exception
 	 */
-	public  void send(String subject,String content,FileDataSource fileDataSource,String receiver) throws Exception{
+	public  void send(String subject,String content,List<FileDataSource> fileDataSources,String receiver) throws Exception{
 		configure();
 		setSession();
 		setDebug(true);
 		setTransport();
 		connect();
-		Message msg=createMail(subject,content,fileDataSource,receiver);
+		Message msg=createMail(subject,content,fileDataSources,receiver);
 		send1(msg);
 	    close();
 	}
 	
 	
-	protected abstract Message createMail(String subject,String content, FileDataSource fileDataSource, String receiver) throws Exception;
+	protected abstract Message createMail(String subject,String content, List<FileDataSource> fileDataSources, String receiver) throws Exception;
 
 	private void send1(Message msg) throws MessagingException {
 		ts.sendMessage(msg, msg.getAllRecipients());
@@ -90,10 +92,15 @@ public abstract class AbstractEmail {
 	
 	    
 	protected void store(MimeMessage message) throws IOException, MessagingException, FileNotFoundException {
-		message.writeTo(new FileOutputStream(storePath));
+		message.writeTo(new FileOutputStream(storePath+getLocalFileName(message.getSubject())));
 	}
 
-    /**
+    protected String getLocalFileName(String subject) {
+		return subject+".eml";
+	}
+
+
+	/**
      * @param args
      * @throws Exception 
      */

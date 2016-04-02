@@ -1,5 +1,7 @@
 package com.importsource.email;
 
+import java.util.List;
+
 import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
@@ -13,7 +15,7 @@ import javax.mail.internet.MimeMessage;
 public class SimpleEmail extends AbstractEmail {
 
 	@Override
-	protected Message createMail(String subject, String content, FileDataSource fileDataSource, String receiver)
+	protected Message createMail(String subject, String content, List<FileDataSource> fileDataSources, String receiver)
 			throws Exception {
 		return this.createSimpleMail(subject, receiver);
 	}

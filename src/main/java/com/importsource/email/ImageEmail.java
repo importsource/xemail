@@ -1,5 +1,7 @@
 package com.importsource.email;
 
+import java.util.List;
+
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.Message;
@@ -10,19 +12,20 @@ import javax.mail.internet.MimeMultipart;
 
 /**
  * 带图片的
+ * 
  * @author Hezf
  *
  */
 public class ImageEmail extends AbstractEmail {
 
 	@Override
-	protected Message createMail(String subject, String content, FileDataSource fileDataSource, String receiver)
+	protected Message createMail(String subject, String content, List<FileDataSource> fileDataSources, String receiver)
 			throws Exception {
-		return this.createImageMail(subject, content, fileDataSource, receiver);
+		return this.createImageMail(subject, content, fileDataSources, receiver);
 	}
 
-	private MimeMessage createImageMail(String subject, String content, FileDataSource fileDataSource, String receiver)
-			throws Exception {
+	private MimeMessage createImageMail(String subject, String content, List<FileDataSource> fileDataSources,
+			String receiver) throws Exception {
 		// 创建邮件
 		MimeMessage message = new MimeMessage(session);
 		// 设置邮件的基本信息
@@ -37,17 +40,18 @@ public class ImageEmail extends AbstractEmail {
 		// 准备邮件正文数据
 		MimeBodyPart mimeBodyPart = new MimeBodyPart();
 		mimeBodyPart.setContent(content, "text/html;charset=UTF-8");
-		// 准备图片数据
-		MimeBodyPart image = new MimeBodyPart();
-		DataHandler dh = new DataHandler(fileDataSource);
-		image.setDataHandler(dh);
-		image.setContentID(fileDataSource.getFile().getPath());
 		// 描述数据关系
 		MimeMultipart mm = new MimeMultipart();
 		mm.addBodyPart(mimeBodyPart);
-		mm.addBodyPart(image);
+		// 准备图片数据
+		for (int i = 0; i < fileDataSources.size(); i++) {
+			MimeBodyPart image = new MimeBodyPart();
+			DataHandler dh = new DataHandler(fileDataSources.get(i));
+			image.setDataHandler(dh);
+			image.setContentID(fileDataSources.get(i).getFile().getPath());
+			mm.addBodyPart(image);
+		}
 		mm.setSubType("related");
-
 		message.setContent(mm);
 		message.saveChanges();
 		// 将创建好的邮件写入到E盘以文件的形式进行保存

@@ -1,5 +1,7 @@
 package com.importsource.email;
 
+import java.util.List;
+
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.Message;
@@ -16,12 +18,12 @@ import javax.mail.internet.MimeMultipart;
 public class AttachEmail extends AbstractEmail {
 
 	@Override
-	protected Message createMail(String subject, String content, FileDataSource fileDataSource, String receiver)
+	protected Message createMail(String subject, String content, List<FileDataSource> fileDataSources, String receiver)
 			throws Exception {
-		return this.createAttachMail(subject, content, fileDataSource, receiver);
+		return this.createAttachMail(subject, content, fileDataSources, receiver);
 	}
 
-	private MimeMessage createAttachMail(String subject, String content, FileDataSource fileDataSource, String receiver)
+	private MimeMessage createAttachMail(String subject, String content, List<FileDataSource> fileDataSources, String receiver)
 			throws Exception {
 		MimeMessage message = new MimeMessage(session);
 
@@ -36,19 +38,18 @@ public class AttachEmail extends AbstractEmail {
 		// 创建邮件正文，为了避免邮件正文中文乱码问题，需要使用charset=UTF-8指明字符编码
 		MimeBodyPart mimeBodyPart = new MimeBodyPart();
 		mimeBodyPart.setContent(content, "text/html;charset=UTF-8");
-
-		// 创建邮件附件
-		MimeBodyPart attach = new MimeBodyPart();
-		DataHandler dh = new DataHandler(fileDataSource);
-		attach.setDataHandler(dh);
-		attach.setFileName(dh.getName()); //
-
 		// 创建容器描述数据关系
 		MimeMultipart mp = new MimeMultipart();
 		mp.addBodyPart(mimeBodyPart);
-		mp.addBodyPart(attach);
+		// 创建邮件附件
+		for(int i=0;i<fileDataSources.size();i++){
+			MimeBodyPart attach = new MimeBodyPart();
+			DataHandler dh = new DataHandler(fileDataSources.get(i));
+			attach.setDataHandler(dh);
+			attach.setFileName(dh.getName());
+			mp.addBodyPart(attach);
+		}
 		mp.setSubType("mixed");
-
 		message.setContent(mp);
 		message.saveChanges();
 		// 将创建的Email写入到E盘存储
