@@ -1,11 +1,12 @@
 # xemail
 一个基于javax封装的邮件收发组件
+
+###只需要一行代码就够了：
 ```java
-Sendmail sendemail=new Sendmail();
-sendemail.sendText("一条纯文本消息", "meixixizf24@gmail.com");
+MailTool.sendText("一条纯文本消息", "meixixizf24@gmail.com");
 ```
 
-###输出结果
+###输出结果：
 
 ```
 DEBUG: setDebug: JavaMail version 1.5.0-b01
@@ -38,7 +39,7 @@ DATA
 From: xxxxxxxx@189.cn
 To: meixixizf24@gmail.com
 Message-ID: <697556912.0.1459414099582.JavaMail.Hezf@smtp.189.cn>
-Subject: sdfsdf
+Subject: 一条纯文本消息
 MIME-Version: 1.0
 Content-Type: text/html;charset=UTF-8
 Content-Transfer-Encoding: 7bit
