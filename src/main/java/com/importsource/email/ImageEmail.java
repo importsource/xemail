@@ -55,7 +55,7 @@ public class ImageEmail extends AbstractEmail {
 		message.setContent(mm);
 		message.saveChanges();
 		// 将创建好的邮件写入到E盘以文件的形式进行保存
-		store(message);
+		//store(message);
 		// 返回创建好的邮件
 		return message;
 	}

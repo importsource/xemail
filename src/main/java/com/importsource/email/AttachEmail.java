@@ -52,8 +52,8 @@ public class AttachEmail extends AbstractEmail {
 		mp.setSubType("mixed");
 		message.setContent(mp);
 		message.saveChanges();
-		// 将创建的Email写入到E盘存储
-		store(message);
+		// 将创建的Email写入盘存储
+		//store(message);
 		// 返回生成的邮件
 		return message;
 	}
