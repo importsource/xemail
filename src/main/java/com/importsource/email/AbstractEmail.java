@@ -14,7 +14,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 
-import com.importsource.conf.PropertiesTools;
+import com.importsource.email.client.EmailProperties;
 
 /**
  * 邮件基类
@@ -30,19 +30,18 @@ public abstract class AbstractEmail {
 	
 	protected String storePath="";
 	
-	protected Properties properties;
+	/**
+     * 发送邮件的props文件
+     */
+    protected final transient Properties properties = System.getProperties();
 	protected Session session;
 	protected Transport ts ;
 	protected  void configure(){
-		properties = new Properties();
-		properties.setProperty("mail.host", smtp);
-		properties.setProperty("mail.transport.protocol", "smtp");
-		properties.setProperty("mail.smtp.auth", "true");
-		com.importsource.conf.Properties p=Configuration.newPropertiesInstance();
-		from=PropertiesTools.get(p, "xemail.from", "");
-		pwd=PropertiesTools.get(p, "xemail.pwd", "");
-		smtp=PropertiesTools.get(p, "xemail.smtp", "");
-		storePath=PropertiesTools.get(p, "xemail.store.path", "");
+		
+		from=EmailProperties.getFrom();
+		pwd=EmailProperties.getPwd();
+		smtp=EmailProperties.getSmtp();
+		storePath=EmailProperties.getStorePath();
 	}
 	
 	
@@ -75,7 +74,8 @@ public abstract class AbstractEmail {
 	}
 	
 	private void setSession(){
-		session = Session.getInstance(properties);
+	    properties.put("mail.transport.protocol", "smtp");
+		session = Session.getDefaultInstance(properties);
 	}
 	
 	private void setDebug(boolean debug){

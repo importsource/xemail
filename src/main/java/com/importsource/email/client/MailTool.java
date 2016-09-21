@@ -1,16 +1,12 @@
 package com.importsource.email.client;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.activation.FileDataSource;
 
-import com.importsource.conf.Properties;
-import com.importsource.conf.PropertiesTools;
 import com.importsource.email.AbstractEmail;
 import com.importsource.email.AttachEmail;
-import com.importsource.email.Configuration;
 import com.importsource.email.ImageEmail;
 import com.importsource.email.SimpleEmail;
 
@@ -30,14 +26,14 @@ public class MailTool {
 	public static void test() {
 		AbstractEmail mail = new SimpleEmail();
 		String testMsg="importsource.xemail test";
-		try {
+		/*try {
 			Properties p=Configuration.newPropertiesInstance();
 			String from=PropertiesTools.get(p, "xemail.from", "");
 			mail.send(testMsg, testMsg, null, from);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	
