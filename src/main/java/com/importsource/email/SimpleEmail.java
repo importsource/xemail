@@ -27,6 +27,7 @@ public class SimpleEmail extends AbstractEmail {
 		message.setFrom(new InternetAddress(from));
 		// 指明邮件的收件人，现在发件人和收件人是一样的，那就是自己给自己发
 		message.setRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
+		//message.setRecipients(Message.RecipientType.TO, receiver);
 		// 邮件的标题
 		message.setSubject(text);
 		// 邮件的文本内容

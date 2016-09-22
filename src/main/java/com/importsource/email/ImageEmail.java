@@ -25,7 +25,7 @@ public class ImageEmail extends AbstractEmail {
 	}
 
 	private MimeMessage createImageMail(String subject, String content, List<FileDataSource> fileDataSources,
-			String receiver) throws Exception {
+		String receiver) throws Exception {
 		// 创建邮件
 		MimeMessage message = new MimeMessage(session);
 		// 设置邮件的基本信息

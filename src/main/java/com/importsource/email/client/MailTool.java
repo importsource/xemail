@@ -11,7 +11,9 @@ import org.apache.commons.logging.LogFactory;
 import com.importsource.email.AbstractEmail;
 import com.importsource.email.AttachEmail;
 import com.importsource.email.ImageEmail;
+import com.importsource.email.SendResult;
 import com.importsource.email.SimpleEmail;
+import com.importsource.email.exc.SendEmailException;
 
 /**
  * 邮件工具类
@@ -28,7 +30,7 @@ public class MailTool {
 	 * @param receiver 接收人
 	 * @throws IllegalAccessException 
 	 */
-	public static void test() {
+	public static SendResult test() {
 		throw new RuntimeException("this method is unavalible");
 		/*try {
 			Properties p=Configuration.newPropertiesInstance();
@@ -45,13 +47,15 @@ public class MailTool {
 	 * @param subject 标题
 	 * @param content 内容
 	 * @param receiver 接收人
+	 * @throws SendEmailException 
 	 */
-	public static void sendText(String text, String receiver) {
+	public static SendResult sendText(String text, String receiver) throws SendEmailException {
 		AbstractEmail mail = new SimpleEmail();
 		try {
-			mail.send(text, text, null, receiver);
+		return 	mail.send(text, text, null, receiver);
 		} catch (Exception e) {
 			log.error(e);
+			throw new SendEmailException(e);
 		}
 	}
 	
@@ -60,13 +64,15 @@ public class MailTool {
 	 * @param subject 标题
 	 * @param content 内容
 	 * @param receiver 接收人
+	 * @throws SendEmailException 
 	 */
-	public static void sendText(String subject, String content, String receiver) {
+	public static SendResult sendText(String subject, String content, String receiver) throws SendEmailException {
 		AbstractEmail mail = new SimpleEmail();
 		try {
-			mail.send(subject, content, null, receiver);
+			return mail.send(subject, content, null, receiver);
 		} catch (Exception e) {
 			log.error(e);
+			throw new SendEmailException(e);
 		}
 	}
 
@@ -76,16 +82,18 @@ public class MailTool {
 	 * @param content 内容
 	 * @param fileDataSource 附件
 	 * @param receiver 接收人
+	 * @throws SendEmailException 
 	 */
-	public static void sendAttach(String subject, String content, FileDataSource fileDataSource, String receiver) {
+	public static SendResult sendAttach(String subject, String content, FileDataSource fileDataSource, String receiver) throws SendEmailException {
 		AbstractEmail mail = new AttachEmail();
 		
 		List<FileDataSource> fileDataSources=new ArrayList<FileDataSource>();
 		fileDataSources.add(fileDataSource);
 		try {
-			mail.send(subject, content, fileDataSources, receiver);
+			return mail.send(subject, content, fileDataSources, receiver);
 		} catch (Exception e) {
 			log.error(e);
+			throw new SendEmailException(e);
 		}
 	}
 	
@@ -95,13 +103,15 @@ public class MailTool {
 	 * @param content 内容
 	 * @param fileDataSources 多个附件
 	 * @param receiver 接收人
+	 * @throws SendEmailException 
 	 */
-	public static void sendAttach(String subject, String content, List<FileDataSource> fileDataSources, String receiver) {
+	public static SendResult sendAttach(String subject, String content, List<FileDataSource> fileDataSources, String receiver) throws SendEmailException {
 		AbstractEmail mail = new AttachEmail();
 		try {
-			mail.send(subject, content, fileDataSources, receiver);
+			return mail.send(subject, content, fileDataSources, receiver);
 		} catch (Exception e) {
 			log.error(e);
+			throw new SendEmailException(e);
 		}
 	}
     
@@ -111,16 +121,18 @@ public class MailTool {
 	 * @param content 内容
 	 * @param fileDataSource 图片
 	 * @param receiver 接收人
+	 * @throws SendEmailException 
 	 */
-	public static void sendImage(String subject, String content, FileDataSource fileDataSource, String receiver) {
+	public static SendResult sendImage(String subject, String content, FileDataSource fileDataSource, String receiver) throws SendEmailException {
 		AbstractEmail mail = new ImageEmail();
 		
 		List<FileDataSource> fileDataSources=new ArrayList<FileDataSource>();
 		fileDataSources.add(fileDataSource);
 		try {
-			mail.send(subject, content, fileDataSources, receiver);
+			return mail.send(subject, content, fileDataSources, receiver);
 		} catch (Exception e) {
 			log.error(e);
+			throw new SendEmailException(e);
 		}
 	}
 	
@@ -130,13 +142,15 @@ public class MailTool {
 	 * @param content 内容
 	 * @param fileDataSources 多个图片
 	 * @param receiver 接收人
+	 * @throws SendEmailException 
 	 */
-	public static void sendImage(String subject, String content, List<FileDataSource> fileDataSources, String receiver) {
+	public static SendResult sendImage(String subject, String content, List<FileDataSource> fileDataSources, String receiver) throws SendEmailException {
 		AbstractEmail mail = new ImageEmail();
 		try {
-			mail.send(subject, content, fileDataSources, receiver);
+			return mail.send(subject, content, fileDataSources, receiver);
 		} catch (Exception e) {
 			log.error(e);
+			throw new SendEmailException(e);
 		}
 	}
 	
@@ -146,13 +160,15 @@ public class MailTool {
 	 * @param subject 标题
 	 * @param content 内容
 	 * @param receivers 接收人
+	 * @throws SendEmailException 
 	 */
-	public static void sendText(String text, List<String> receivers) {
+	public static SendResult sendText(String text, List<String> receivers) throws SendEmailException {
 		AbstractEmail mail = new SimpleEmail();
 		try {
-			mail.send(text, text, null, receivers);
+			return mail.send(text, text, null, receivers);
 		} catch (Exception e) {
 			log.error(e);
+			throw new SendEmailException(e);
 		}
 	}
 	
@@ -161,13 +177,15 @@ public class MailTool {
 	 * @param subject 标题
 	 * @param content 内容
 	 * @param receivers 接收人
+	 * @throws SendEmailException 
 	 */
-	public static void sendText(String subject, String content, List<String> receivers) {
+	public static SendResult sendText(String subject, String content, List<String> receivers) throws SendEmailException {
 		AbstractEmail mail = new SimpleEmail();
 		try {
-			mail.send(subject, content, null, receivers);
+			return mail.send(subject, content, null, receivers);
 		} catch (Exception e) {
 			log.error(e);
+			throw new SendEmailException(e);
 		}
 	}
 
@@ -177,16 +195,18 @@ public class MailTool {
 	 * @param content 内容
 	 * @param fileDataSource 附件
 	 * @param receivers 接收人
+	 * @throws SendEmailException 
 	 */
-	public static void sendAttach(String subject, String content, FileDataSource fileDataSource, List<String> receivers) {
+	public static SendResult sendAttach(String subject, String content, FileDataSource fileDataSource, List<String> receivers) throws SendEmailException {
 		AbstractEmail mail = new AttachEmail();
 		
 		List<FileDataSource> fileDataSources=new ArrayList<FileDataSource>();
 		fileDataSources.add(fileDataSource);
 		try {
-			mail.send(subject, content, fileDataSources, receivers);
+			return mail.send(subject, content, fileDataSources, receivers);
 		} catch (Exception e) {
 			log.error(e);
+			throw new SendEmailException(e);
 		}
 	}
 	
@@ -196,13 +216,15 @@ public class MailTool {
 	 * @param content 内容
 	 * @param fileDataSources 多个附件
 	 * @param receivers 接收人
+	 * @throws SendEmailException 
 	 */
-	public static void sendAttach(String subject, String content, List<FileDataSource> fileDataSources, List<String> receivers) {
+	public static SendResult sendAttach(String subject, String content, List<FileDataSource> fileDataSources, List<String> receivers) throws SendEmailException {
 		AbstractEmail mail = new AttachEmail();
 		try {
-			mail.send(subject, content, fileDataSources, receivers);
+			return mail.send(subject, content, fileDataSources, receivers);
 		} catch (Exception e) {
 			log.error(e);
+			throw new SendEmailException(e);
 		}
 	}
     
@@ -212,16 +234,18 @@ public class MailTool {
 	 * @param content 内容
 	 * @param fileDataSource 图片
 	 * @param receivers 接收人
+	 * @throws SendEmailException 
 	 */
-	public static void sendImage(String subject, String content, FileDataSource fileDataSource, List<String> receivers) {
+	public static SendResult sendImage(String subject, String content, FileDataSource fileDataSource, List<String> receivers) throws SendEmailException {
 		AbstractEmail mail = new ImageEmail();
 		
 		List<FileDataSource> fileDataSources=new ArrayList<FileDataSource>();
 		fileDataSources.add(fileDataSource);
 		try {
-			mail.send(subject, content, fileDataSources, receivers);
+			return mail.send(subject, content, fileDataSources, receivers);
 		} catch (Exception e) {
 			log.error(e);
+			throw new SendEmailException(e);
 		}
 	}
 	
@@ -231,13 +255,15 @@ public class MailTool {
 	 * @param content 内容
 	 * @param fileDataSources 多个图片
 	 * @param receivers 接收人
+	 * @throws SendEmailException 
 	 */
-	public static void sendImage(String subject, String content, List<FileDataSource> fileDataSources, List<String> receivers) {
+	public static SendResult sendImage(String subject, String content, List<FileDataSource> fileDataSources, List<String> receivers) throws SendEmailException {
 		AbstractEmail mail = new ImageEmail();
 		try {
-			mail.send(subject, content, fileDataSources, receivers);
+		return 	mail.send(subject, content, fileDataSources, receivers);
 		} catch (Exception e) {
 			log.error(e);
+			throw new SendEmailException(e);
 		}
 	}
 	

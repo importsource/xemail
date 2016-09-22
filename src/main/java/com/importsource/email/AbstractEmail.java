@@ -3,6 +3,7 @@ package com.importsource.email;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -60,15 +61,27 @@ public abstract class AbstractEmail {
 	 * @param receiver 接收人
 	 * @throws Exception
 	 */
-	public  void send(String subject,String content,List<FileDataSource> fileDataSources,String receiver) throws Exception{
+	public  SendResult send(String subject,String content,List<FileDataSource> fileDataSources,String receiver) throws Exception{
 		configure();
 		setSession();
 		setDebug(true);
 		setTransport();
 		connect();
 		Message msg=createMail(subject,content,fileDataSources,receiver);
-		send1(msg);
+		SendResult result=new SendResult();
+		List<String> success=new ArrayList<String>();
+		List<String> fail=new ArrayList<String>();
+		try {
+			send1(msg);
+			success.add(receiver);
+		} catch (MessagingException e) {
+			log.error(e);
+			fail.add(receiver);
+		}
+		result.setSuccess(success);
+		result.setFail(fail);
 	    close();
+	    return result;
 	}
 	
 	/**
@@ -78,17 +91,31 @@ public abstract class AbstractEmail {
 	 * @param receivers 多个接收人
 	 * @throws Exception
 	 */
-	public  void send(String subject,String content,List<FileDataSource> fileDataSources,List<String> receivers) throws Exception{
+	public  SendResult send(String subject,String content,List<FileDataSource> fileDataSources,List<String> receivers) throws Exception{
 		configure();
 		setSession();
 		setDebug(true);
 		setTransport();
 		connect();
+		SendResult result=new SendResult();
+		List<String> success=new ArrayList<String>();
+		List<String> fail=new ArrayList<String>();
 		for(int i=0;i<receivers.size();i++){
-			Message msg=createMail(subject,content,fileDataSources,receivers.get(i));
-			send1(msg);
+			String receiver = receivers.get(i);
+			Message msg=createMail(subject,content,fileDataSources,receiver);
+			try {
+				send1(msg);
+				success.add(receiver);
+			} catch (MessagingException e) {
+				log.error(e);
+				fail.add(receiver);
+				continue;
+			}
 		}
+		result.setSuccess(success);
+		result.setFail(fail);
 	    close();
+	    return result;
 	}
 	
 	

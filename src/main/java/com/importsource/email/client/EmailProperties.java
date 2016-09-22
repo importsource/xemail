@@ -27,7 +27,9 @@ public final class EmailProperties {
             from = prop.getProperty("xemail.from").trim();   
             pwd = prop.getProperty("xemail.pwd").trim();
             smtp = prop.getProperty("xemail.smtp").trim();
-            protocol=prop.getProperty("xemail.protocol").trim();
+            if(prop.getProperty("xemail.protocol")!=null){
+            	protocol=prop.getProperty("xemail.protocol").trim();
+            }
         } catch (IOException e) {   
             log.error(e);
         }   
