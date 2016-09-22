@@ -63,6 +63,26 @@ public abstract class AbstractEmail {
 	    close();
 	}
 	
+	/**
+	 * 发送含有附件的邮件
+	 * @param text 文本信息和主题
+	 * @param fileDataSource 附件
+	 * @param receivers 多个接收人
+	 * @throws Exception
+	 */
+	public  void send(String subject,String content,List<FileDataSource> fileDataSources,List<String> receivers) throws Exception{
+		configure();
+		setSession();
+		setDebug(true);
+		setTransport();
+		connect();
+		for(int i=0;i<receivers.size();i++){
+			Message msg=createMail(subject,content,fileDataSources,receivers.get(i));
+			send1(msg);
+		}
+	    close();
+	}
+	
 	
 	protected abstract Message createMail(String subject,String content, List<FileDataSource> fileDataSources, String receiver) throws Exception;
 

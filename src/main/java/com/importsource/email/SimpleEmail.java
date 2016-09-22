@@ -17,10 +17,10 @@ public class SimpleEmail extends AbstractEmail {
 	@Override
 	protected Message createMail(String subject, String content, List<FileDataSource> fileDataSources, String receiver)
 			throws Exception {
-		return this.createSimpleMail(subject, receiver);
+		return this.createSimpleMail(subject,content, receiver);
 	}
 
-	private MimeMessage createSimpleMail(String text, String receiver) throws Exception {
+	private MimeMessage createSimpleMail(String text, String content,String receiver) throws Exception {
 		// 创建邮件对象
 		MimeMessage message = new MimeMessage(session);
 		// 指明邮件的发件人
@@ -30,7 +30,7 @@ public class SimpleEmail extends AbstractEmail {
 		// 邮件的标题
 		message.setSubject(text);
 		// 邮件的文本内容
-		message.setContent(text, "text/html;charset=UTF-8");
+		message.setContent(content, "text/html;charset=UTF-8");
 		// 返回创建好的邮件对象
 		return message;
 	}

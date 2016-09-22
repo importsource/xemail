@@ -142,5 +142,120 @@ public class MailTool {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	/**************************************************/
+	/**
+	 * 发送纯文本(标题和正文一样)
+	 * @param subject 标题
+	 * @param content 内容
+	 * @param receivers 接收人
+	 */
+	public static void sendText(String text, List<String> receivers) {
+		AbstractEmail mail = new SimpleEmail();
+		try {
+			mail.send(text, text, null, receivers);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 发送纯文本
+	 * @param subject 标题
+	 * @param content 内容
+	 * @param receivers 接收人
+	 */
+	public static void sendText(String subject, String content, List<String> receivers) {
+		AbstractEmail mail = new SimpleEmail();
+		try {
+			mail.send(subject, content, null, receivers);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 发送带附件的（单个附件）
+	 * @param subject 标题
+	 * @param content 内容
+	 * @param fileDataSource 附件
+	 * @param receivers 接收人
+	 */
+	public static void sendAttach(String subject, String content, FileDataSource fileDataSource, List<String> receivers) {
+		AbstractEmail mail = new AttachEmail();
+		
+		List<FileDataSource> fileDataSources=new ArrayList<FileDataSource>();
+		fileDataSources.add(fileDataSource);
+		try {
+			mail.send(subject, content, fileDataSources, receivers);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 发送带附件的（多个附件）
+	 * @param subject 标题
+	 * @param content 内容
+	 * @param fileDataSources 多个附件
+	 * @param receivers 接收人
+	 */
+	public static void sendAttach(String subject, String content, List<FileDataSource> fileDataSources, List<String> receivers) {
+		AbstractEmail mail = new AttachEmail();
+		try {
+			mail.send(subject, content, fileDataSources, receivers);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+    
+	/**
+	 * 发送正文带图片的(单张图片)
+	 * @param subject 标题
+	 * @param content 内容
+	 * @param fileDataSource 图片
+	 * @param receivers 接收人
+	 */
+	public static void sendImage(String subject, String content, FileDataSource fileDataSource, List<String> receivers) {
+		AbstractEmail mail = new ImageEmail();
+		
+		List<FileDataSource> fileDataSources=new ArrayList<FileDataSource>();
+		fileDataSources.add(fileDataSource);
+		try {
+			mail.send(subject, content, fileDataSources, receivers);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 发送正文带图片的(多张图片)
+	 * @param subject 标题
+	 * @param content 内容
+	 * @param fileDataSources 多个图片
+	 * @param receivers 接收人
+	 */
+	public static void sendImage(String subject, String content, List<FileDataSource> fileDataSources, List<String> receivers) {
+		AbstractEmail mail = new ImageEmail();
+		try {
+			mail.send(subject, content, fileDataSources, receivers);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 
 }
