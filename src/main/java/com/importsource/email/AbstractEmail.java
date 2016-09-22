@@ -14,6 +14,9 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.importsource.email.client.EmailProperties;
 
 /**
@@ -22,11 +25,15 @@ import com.importsource.email.client.EmailProperties;
  *
  */
 public abstract class AbstractEmail {
+	protected  static Log log = LogFactory.getLog(AbstractEmail.class);
+	
 	protected  String smtp = "smtp.189.cn";
 
 	protected  String pwd = "";
 
 	protected  String from = "";
+	
+	protected String protocol="smtp";
 	
 	protected String storePath="";
 	
@@ -42,6 +49,7 @@ public abstract class AbstractEmail {
 		pwd=EmailProperties.getPwd();
 		smtp=EmailProperties.getSmtp();
 		storePath=EmailProperties.getStorePath();
+		protocol=EmailProperties.getProtocol();
 	}
 	
 	
@@ -94,7 +102,7 @@ public abstract class AbstractEmail {
 	}
 	
 	private void setSession(){
-	    properties.put("mail.transport.protocol", "smtp");
+	    properties.put("mail.transport.protocol", protocol);
 		session = Session.getDefaultInstance(properties);
 	}
 	

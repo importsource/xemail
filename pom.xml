@@ -14,10 +14,12 @@
 			<artifactId>mail</artifactId>
 			<version>1.5.0-b01</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>com.importsource.conf</groupId>
-			<artifactId>importsource-conf</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency> -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+
 	</dependencies>
 </project>

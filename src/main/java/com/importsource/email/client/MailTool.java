@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.activation.FileDataSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.importsource.email.AbstractEmail;
 import com.importsource.email.AttachEmail;
 import com.importsource.email.ImageEmail;
@@ -16,22 +19,22 @@ import com.importsource.email.SimpleEmail;
  *
  */
 public class MailTool {
-	
+	private MailTool(){}
+	private  static Log log = LogFactory.getLog(MailTool.class);
 	/**
 	 * 测试邮件发送是否正常。发送纯文本(标题和正文一样)
 	 * @param text 标题
 	 * @param content 内容
 	 * @param receiver 接收人
+	 * @throws IllegalAccessException 
 	 */
 	public static void test() {
-		AbstractEmail mail = new SimpleEmail();
-		String testMsg="importsource.xemail test";
+		throw new RuntimeException("this method is unavalible");
 		/*try {
 			Properties p=Configuration.newPropertiesInstance();
 			String from=PropertiesTools.get(p, "xemail.from", "");
 			mail.send(testMsg, testMsg, null, from);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
 	}
@@ -48,8 +51,7 @@ public class MailTool {
 		try {
 			mail.send(text, text, null, receiver);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 	}
 	
@@ -64,8 +66,7 @@ public class MailTool {
 		try {
 			mail.send(subject, content, null, receiver);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 	}
 
@@ -84,8 +85,7 @@ public class MailTool {
 		try {
 			mail.send(subject, content, fileDataSources, receiver);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 	}
 	
@@ -101,8 +101,7 @@ public class MailTool {
 		try {
 			mail.send(subject, content, fileDataSources, receiver);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 	}
     
@@ -121,8 +120,7 @@ public class MailTool {
 		try {
 			mail.send(subject, content, fileDataSources, receiver);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 	}
 	
@@ -138,13 +136,11 @@ public class MailTool {
 		try {
 			mail.send(subject, content, fileDataSources, receiver);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 	}
 	
 	
-	/**************************************************/
 	/**
 	 * 发送纯文本(标题和正文一样)
 	 * @param subject 标题
@@ -156,8 +152,7 @@ public class MailTool {
 		try {
 			mail.send(text, text, null, receivers);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 	}
 	
@@ -172,8 +167,7 @@ public class MailTool {
 		try {
 			mail.send(subject, content, null, receivers);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 	}
 
@@ -192,8 +186,7 @@ public class MailTool {
 		try {
 			mail.send(subject, content, fileDataSources, receivers);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 	}
 	
@@ -209,8 +202,7 @@ public class MailTool {
 		try {
 			mail.send(subject, content, fileDataSources, receivers);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 	}
     
@@ -229,8 +221,7 @@ public class MailTool {
 		try {
 			mail.send(subject, content, fileDataSources, receivers);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 	}
 	
@@ -246,8 +237,7 @@ public class MailTool {
 		try {
 			mail.send(subject, content, fileDataSources, receivers);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e);
 		}
 	}
 	
