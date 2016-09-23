@@ -89,6 +89,13 @@ public abstract class AbstractEmail {
 		setDebug(true);
 		setTransport();
 		connect();
+		SendResult result = sendSingle(subject, content, fileDataSources, receiver);
+		close();
+		return result;
+	}
+
+	private SendResult sendSingle(String subject, String content, List<FileDataSource> fileDataSources, String receiver)
+			throws Exception {
 		Message msg = createMail(subject, content, fileDataSources, receiver);
 		SendResult result = new SendResult();
 		List<String> success = new ArrayList<String>();
@@ -102,7 +109,6 @@ public abstract class AbstractEmail {
 		}
 		result.setSuccess(success);
 		result.setFail(fail);
-		close();
 		return result;
 	}
 
@@ -124,6 +130,13 @@ public abstract class AbstractEmail {
 		setDebug(true);
 		setTransport();
 		connect();
+		SendResult result = sendBatch(subject, content, fileDataSources, receivers);
+		close();
+		return result;
+	}
+
+	private SendResult sendBatch(String subject, String content, List<FileDataSource> fileDataSources,
+			List<String> receivers) throws Exception {
 		SendResult result = new SendResult();
 		List<String> success = new ArrayList<String>();
 		List<String> fail = new ArrayList<String>();
@@ -141,7 +154,6 @@ public abstract class AbstractEmail {
 		}
 		result.setSuccess(success);
 		result.setFail(fail);
-		close();
 		return result;
 	}
 
