@@ -18,6 +18,14 @@ import javax.mail.internet.MimeMultipart;
  */
 public class ImageEmail extends AbstractEmail {
 
+	public ImageEmail(boolean builtIn, String from, String pwd, String protocol, String host) {
+		super(builtIn, from, pwd, protocol, host);
+	}
+	
+	 public ImageEmail() {
+		 super();
+	}
+
 	@Override
 	protected Message createMail(String subject, String content, List<FileDataSource> fileDataSources, String receiver)
 			throws Exception {

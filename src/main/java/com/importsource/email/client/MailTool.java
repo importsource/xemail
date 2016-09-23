@@ -43,6 +43,25 @@ public class MailTool {
 	
 	
 	/**
+	 * 发送
+	 * @param instance 具体的邮箱实例
+	 * @param subject 标题
+	 * @param content 内容
+	 * @param receivers 接收人
+	 * @throws SendEmailException 
+	 */
+	public static SendResult send(AbstractEmail instance,String subject, String content, List<String> receivers) throws SendEmailException {
+		//AbstractEmail mail = new SimpleEmail();
+		try {
+			return instance.send(subject, content, null, receivers);
+		} catch (Exception e) {
+			log.error(e);
+			throw new SendEmailException(e);
+		}
+	}
+	
+	
+	/**
 	 * 发送纯文本(标题和正文一样)
 	 * @param subject 标题
 	 * @param content 内容
@@ -188,6 +207,8 @@ public class MailTool {
 			throw new SendEmailException(e);
 		}
 	}
+	
+	
 
 	/**
 	 * 发送带附件的（单个附件）

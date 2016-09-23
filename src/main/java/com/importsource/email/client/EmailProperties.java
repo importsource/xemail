@@ -1,9 +1,6 @@
 package com.importsource.email.client;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
@@ -18,7 +15,7 @@ public final class EmailProperties {
     private static String storePath;
 	private static String from;   
     private static String pwd;
-    private static String smtp;
+    private static String host;
     private static String protocol="smtp";
   
     static {   
@@ -28,7 +25,7 @@ public final class EmailProperties {
             prop.load(in);   
             from = parse(prop.getProperty("xemail.from").trim());   
             pwd = parse(prop.getProperty("xemail.pwd").trim());
-            smtp = parse(prop.getProperty("xemail.smtp").trim());
+            host = parse(prop.getProperty("xemail.host").trim());
             if(prop.getProperty("xemail.protocol")!=null){
             	protocol=parse(prop.getProperty("xemail.protocol").trim());
             }
@@ -40,8 +37,8 @@ public final class EmailProperties {
     /**  
      * 私有构造方法，不需要创建对象  
      */   
-    private EmailProperties() {   
-    }   
+   /* private EmailProperties() {   
+    }  */ 
   
     private static String parse(String proVal) {
 		if(proVal.startsWith("@{") && proVal.endsWith("}")){
@@ -59,8 +56,8 @@ public final class EmailProperties {
         return pwd;   
     }  
     
-    public static String getSmtp() {   
-        return smtp;   
+    public static String getHost() {   
+        return host;   
     }  
     
     public static String getProtocol() {

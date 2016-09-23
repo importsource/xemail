@@ -14,6 +14,14 @@ import javax.mail.internet.MimeMessage;
  */
 public class SimpleEmail extends AbstractEmail {
 
+	public SimpleEmail(boolean builtIn, String from, String pwd, String protocol, String host) {
+		super(builtIn, from, pwd, protocol, host);
+	}
+	
+	public SimpleEmail() {
+		super();
+	}
+
 	@Override
 	protected Message createMail(String subject, String content, List<FileDataSource> fileDataSources, String receiver)
 			throws Exception {

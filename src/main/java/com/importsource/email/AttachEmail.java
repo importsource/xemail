@@ -17,6 +17,14 @@ import javax.mail.internet.MimeMultipart;
  */
 public class AttachEmail extends AbstractEmail {
 
+	public AttachEmail(boolean builtIn, String from, String pwd, String protocol, String host) {
+		super(builtIn, from, pwd, protocol, host);
+	}
+	
+	public AttachEmail() {
+		super();
+	}
+
 	@Override
 	protected Message createMail(String subject, String content, List<FileDataSource> fileDataSources, String receiver)
 			throws Exception {
