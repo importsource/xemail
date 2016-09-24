@@ -9,16 +9,20 @@ import java.util.Properties;
 
 import javax.activation.FileDataSource;
 import javax.mail.Message;
+import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.importsource.email.client.EmailProperties;
+import com.importsource.email.exc.SendEmailException;
 
 /**
  * 邮件基类
@@ -26,7 +30,7 @@ import com.importsource.email.client.EmailProperties;
  * @author Hezf
  *
  */
-public abstract class AbstractEmail {
+public abstract class AbstractEmail implements SendEmailable {
 	protected static Log log = LogFactory.getLog(AbstractEmail.class);
 
 	protected String host = "smtp.189.cn";
@@ -47,6 +51,10 @@ public abstract class AbstractEmail {
 	protected final transient Properties properties = System.getProperties();
 	protected Session session;
 	protected Transport ts;
+	
+	
+	protected List<InternetAddress> cc;
+	protected List<InternetAddress> bcc;
 
 	public AbstractEmail(boolean builtIn, String from, String pwd, String protocol, String host) {
 		if (!builtIn) {
@@ -54,7 +62,7 @@ public abstract class AbstractEmail {
 			this.protocol = protocol;
 			this.pwd = pwd;
 			this.host = host;
-			this.builtIn=builtIn;
+			this.builtIn = builtIn;
 		}
 	}
 
@@ -82,8 +90,8 @@ public abstract class AbstractEmail {
 	 *            接收人
 	 * @throws Exception
 	 */
-	public SendResult send(String subject, String content, List<FileDataSource> fileDataSources, String receiver)
-			throws Exception {
+	public synchronized SendResult send(String subject, String content, List<FileDataSource> fileDataSources,
+			String receiver) throws SendEmailException {
 		configure();
 		setSession();
 		setDebug(true);
@@ -95,8 +103,14 @@ public abstract class AbstractEmail {
 	}
 
 	private SendResult sendSingle(String subject, String content, List<FileDataSource> fileDataSources, String receiver)
-			throws Exception {
-		Message msg = createMail(subject, content, fileDataSources, receiver);
+			throws SendEmailException {
+		Message msg;
+		try {
+			msg = createMail(subject, content, fileDataSources, receiver);
+			setBCCAndCC(msg);
+		} catch (Exception e1) {
+			throw new SendEmailException(e1);
+		}
 		SendResult result = new SendResult();
 		List<String> success = new ArrayList<String>();
 		List<String> fail = new ArrayList<String>();
@@ -112,6 +126,15 @@ public abstract class AbstractEmail {
 		return result;
 	}
 
+	private void setBCCAndCC(Message msg) throws MessagingException {
+		if(cc!=null&& cc.size()>0){
+			msg.setRecipients(Message.RecipientType.CC, cc.toArray(new InternetAddress[]{}));
+		}
+		if(bcc!=null){
+			msg.setRecipients(Message.RecipientType.BCC, bcc.toArray(new InternetAddress[]{}));
+		}
+	}
+
 	/**
 	 * 发送含有附件的邮件
 	 * 
@@ -123,14 +146,19 @@ public abstract class AbstractEmail {
 	 *            多个接收人
 	 * @throws Exception
 	 */
-	public SendResult send(String subject, String content, List<FileDataSource> fileDataSources, List<String> receivers)
-			throws Exception {
+	public synchronized SendResult send(String subject, String content, List<FileDataSource> fileDataSources,
+			List<String> receivers) throws SendEmailException {
 		configure();
 		setSession();
 		setDebug(true);
 		setTransport();
 		connect();
-		SendResult result = sendBatch(subject, content, fileDataSources, receivers);
+		SendResult result;
+		try {
+			result = sendBatch(subject, content, fileDataSources, receivers);
+		} catch (Exception e1) {
+			throw new SendEmailException(e1);
+		}
 		close();
 		return result;
 	}
@@ -143,6 +171,7 @@ public abstract class AbstractEmail {
 		for (int i = 0; i < receivers.size(); i++) {
 			String receiver = receivers.get(i);
 			Message msg = createMail(subject, content, fileDataSources, receiver);
+			setBCCAndCC(msg);
 			try {
 				send1(msg);
 				success.add(receiver);
@@ -162,10 +191,16 @@ public abstract class AbstractEmail {
 
 	private void send1(Message msg) throws MessagingException {
 		ts.sendMessage(msg, msg.getAllRecipients());
+		
 	}
 
-	private void close() throws MessagingException {
-		ts.close();
+	private void close() throws SendEmailException {
+		try {
+			ts.close();
+		} catch (MessagingException e) {
+			throw new SendEmailException("messaging Exception", e);
+		}
+
 	}
 
 	private void setSession() {
@@ -177,12 +212,21 @@ public abstract class AbstractEmail {
 		session.setDebug(true);
 	}
 
-	private void setTransport() throws NoSuchProviderException {
-		ts = session.getTransport();
+	private void setTransport() throws SendEmailException {
+		try {
+			ts = session.getTransport();
+		} catch (NoSuchProviderException e) {
+			throw new SendEmailException("No such provider", e);
+		}
 	}
 
-	private void connect() throws MessagingException {
-		ts.connect(host, from, pwd);
+	private void connect() throws SendEmailException {
+		try {
+			ts.connect(host, from, pwd);
+		} catch (MessagingException e) {
+			throw new SendEmailException("messaging Exception", e);
+		}
+
 	}
 
 	protected void store(MimeMessage message) throws IOException, MessagingException, FileNotFoundException {
@@ -191,6 +235,31 @@ public abstract class AbstractEmail {
 
 	protected String getLocalFileName(String subject) {
 		return subject + ".eml";
+	}
+	
+	public void setCC(List<String> cc) throws AddressException {
+		
+		if(cc!=null&& cc.size()>0){
+			List<InternetAddress> ccList=new ArrayList<InternetAddress>();
+			for(int i=0;i<cc.size();i++){
+				String ccTmp=cc.get(i);
+				ccList.add(new InternetAddress(ccTmp));
+			}
+			this.cc=ccList;
+		}
+		
+		
+	}
+
+	public void setBCC(List<String> bcc) throws AddressException {
+		if(bcc!=null&& bcc.size()>0){
+			List<InternetAddress> bccList=new ArrayList<InternetAddress>();
+			for(int i=0;i<bcc.size();i++){
+				String bccTmp=bcc.get(i);
+				bccList.add(new InternetAddress(bccTmp));
+			}
+			this.bcc=bccList;
+		}
 	}
 
 	/**
